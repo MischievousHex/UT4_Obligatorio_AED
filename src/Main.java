@@ -13,6 +13,10 @@ public class Main {
         SistemaPOS sistemaPOS = new SistemaPOS(almacen);
         sistemaPOS.InteractiveCalcularImporte();
 
+        TArbolBB<String> ArbolBinario = new TArbolBB<>();
+        TElementoAB<String> franco = new TElementoAB<>("1", "Franco");
+        ArbolBinario.insertar(franco);
+
       // cargar los productos desde el archivo "altasprueba.txt"
       // listar los productos ordenados por codigo, junto con su cantidad existente
       //emitir el valor del stock

@@ -72,26 +72,6 @@ public class TElementoAB<T> implements IElementoAB<T> {
         }
     }
 
-    public TElementoAB<T> buscarInmediatoAnterior(Comparable claveBuscada){
-        TElementoAB<T> aux = this;
-        int comparativa = claveBuscada.compareTo(aux.getEtiqueta());
-        while( aux != null) {
-            if (comparativa == 0) { // si estamos en el buscado
-                return this.getHijoIzq(); // retornamos su izquierdo
-            } else if (comparativa > 0) { // si es mayor
-                if ((claveBuscada.equals(aux.getHijoDer().getEtiqueta())) || // si el derecho es el que estamos buscando
-                        (claveBuscada.compareTo(getHijoDer().getEtiqueta()) < 0) || // si el derecho es menor del que estamos buscando
-                        (aux.getHijoDer() == null)) { // si el derecho no existe
-                    return aux; // estamos en el anterior del que buscamos
-                }
-                aux = aux.getHijoDer(); // de lo contrario pasamos al derecho
-            } else { // si es menor
-                aux = aux.getHijoIzq();
-            }
-        }
-        return null;
-    }
-
     /**
      * @return recorrida en inorden del subArbol que cuelga del elemento actual
      */
@@ -205,6 +185,52 @@ public class TElementoAB<T> implements IElementoAB<T> {
         }
     }
 
+    public void obtenerHojas(Lista<T> lista){
+        if(hijoIzq == null && hijoDer == null)
+            lista.insertar(new Nodo<>(etiqueta, datos));
+        if(hijoIzq != null)
+            hijoIzq.obtenerHojas(lista);
+        if(hijoDer != null)
+            hijoDer.obtenerHojas(lista);
+    }
+
+    public void ImprimirHojas(){
+        if(hijoIzq == null && hijoDer == null)
+            System.out.println("Hoja: " + this.getEtiqueta().toString() + ", " + this.getDatos().toString());
+        if(hijoIzq != null){
+            hijoIzq.ImprimirHojas();
+        }
+        if(hijoDer != null){
+            hijoDer.ImprimirHojas();
+        }
+    }
+
+    public int CantidadHijosNivel(int nivel, int actual, int contador) {
+        if(actual == nivel){
+            return contador+1;
+        } // else ...
+
+        if(this.hijoIzq != null)
+            contador = this.hijoIzq.CantidadHijosNivel(nivel, actual+1, contador);
+        if(this.hijoDer != null)
+            contador = this.hijoDer.CantidadHijosNivel(nivel, actual+1, contador);
+        return contador;
+    }
+
+    public boolean VerificarBusqueda(Comparable minimo, Comparable maximo){
+        boolean verificar = true;
+        if(this.etiqueta.compareTo(minimo) < 0 || this.etiqueta.compareTo(maximo) > 0){
+            verificar = false;
+        }
+        if(hijoIzq != null) {
+            verificar = verificar && hijoIzq.VerificarBusqueda(this.etiqueta, maximo);
+        }
+        if(hijoDer != null) {
+            verificar = verificar && hijoDer.VerificarBusqueda(minimo, this.etiqueta);
+        }
+        return verificar;
+    }
+
     @Override
     public TElementoAB eliminar(Comparable unaEtiqueta) {
         if (unaEtiqueta.compareTo(etiqueta) < 0) {
@@ -254,5 +280,47 @@ public class TElementoAB<T> implements IElementoAB<T> {
         }
     }
 
+    public TElementoAB<T> ObtenerMenor(){
+        if(this.hijoIzq == null)
+            return this;
+        return this.hijoIzq.ObtenerMenor();
+    }
 
+    public TElementoAB<T> ObtenerMayor(){
+        if(this.hijoDer == null)
+            return this;
+        return this.hijoDer.ObtenerMayor();
+    }
+
+    public TElementoAB<T> ObtenerInmediatoAnterior(Comparable unaEtiqueta) {
+
+        // Precondición: La etiqueta debe estar en el árbol
+        if(buscar(unaEtiqueta) == null)
+            return null;
+
+        TElementoAB<T> anterior = null;
+        TElementoAB<T> actual = this;
+
+        while(true) {
+
+            if (actual.etiqueta.equals(unaEtiqueta)) {
+                if (actual.getHijoIzq() == null)
+                    return anterior;
+                else return actual.getHijoIzq().ObtenerMayor();
+            }
+            else if (actual.etiqueta.compareTo(unaEtiqueta) < 0) {
+                if (actual.getHijoIzq() != null)
+                    actual = actual.getHijoIzq();
+            }
+
+            else if (actual.etiqueta.compareTo(unaEtiqueta) > 0) {
+                if (actual.getHijoDer() != null) {
+                    anterior = actual;
+                    actual = actual.getHijoDer();
+                }
+            }
+
+        }
+
+    }
 }

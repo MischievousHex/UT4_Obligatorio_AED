@@ -79,24 +79,50 @@ public class TArbolBB<T> implements IArbolBB<T> {
         return listaInorden;
     }
 
+    public boolean VerificarBusqueda(){
+        return this.raiz.VerificarBusqueda(this.ObtenerMenor().getEtiqueta(), this.ObtenerMayor().getEtiqueta());
+    }
+
     @Override
     public int obtenerAltura() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(esVacio())
+            return 0;
+        return raiz.obtenerAltura();
     }
 
     @Override
     public int obtenerTamanio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(esVacio())
+            return 0;
+        return obtenerTamanio();
     }
 
     @Override
     public int obtenerNivel(Comparable unaEtiqueta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(esVacio())
+            return 0;
+        return raiz.obtenerNivel(unaEtiqueta);
     }
 
     @Override
     public int obtenerCantidadHojas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(esVacio())
+            return 1;
+        return raiz.obtenerCantidadHojas();
+    }
+
+    public void imprimirHojas(Lista<T> lista) {
+        raiz.obtenerHojas(lista);
+        Nodo<T> aux = lista.getPrimero();
+        while(aux != null){
+            System.out.println(aux.getEtiqueta().toString() + ", " + aux.getDato().toString() +
+                    ", Nivel: " + raiz.obtenerNivel(aux.getEtiqueta()));
+            aux = aux.getSiguiente();
+        }
+    }
+
+    public int CantidadNodosNivel(int nivel){
+        return raiz.CantidadHijosNivel(nivel, 1, 0);
     }
 
     @Override
@@ -105,6 +131,33 @@ public class TArbolBB<T> implements IArbolBB<T> {
             this.raiz = this.raiz.eliminar(unaEtiqueta);
         }
     }
-   
+
+    public TElementoAB<T> ObtenerMayor(){
+        TElementoAB<T> auxiliar = raiz;
+        while(auxiliar != null){
+            if(auxiliar.getHijoDer() == null)
+                return auxiliar;
+            auxiliar = auxiliar.getHijoDer();
+        }
+        return raiz;
+    }
+
+    public TElementoAB<T> ObtenerMenor(){
+        TElementoAB<T> auxiliar = raiz;
+        while(auxiliar != null){
+            if(auxiliar.getHijoIzq() == null)
+                return auxiliar;
+            auxiliar = auxiliar.getHijoIzq();
+        }
+        return raiz;
+    }
+
+    public TElementoAB<T> ObtenerMenorRecursivo(){
+        return raiz.ObtenerMenor();
+    }
+
+    public TElementoAB<T> ObtenerMayorRecursivo(){
+        return raiz.ObtenerMayor();
+    }
 
 }
