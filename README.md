@@ -10,4 +10,6 @@ Implementación de un árbol binario de búsqueda en Java con las siguientes car
 * Listar todas las hojas cada una con su nivel.
 * Verificar si el árbol es de búsqueda.
 
-También se dispone de un análisis de los métodos y su versión en pseudocódigo con su complejidad de tiempo en docs/
+También se dispone de un análisis de los métodos y su versión en pseudocódigo con su complejidad de tiempo en `docs/`
+
+**El programa no cuenta con un método principal, solo con las pruebas unitarias en el archivo `src/TestArbolBinario.java`** 
