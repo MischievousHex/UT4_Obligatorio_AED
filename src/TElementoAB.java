@@ -164,74 +164,6 @@ public class TElementoAB<T> implements IElementoAB<T> {
     }
 
     @Override
-    public int obtenerCantidadHojas() {
-        if (hijoIzq == null){
-            if (hijoDer == null){
-                // si los dos no existen
-                return 1;
-            } else {
-                // si el izquierdo no existe pero el derecho si
-                return hijoDer.obtenerCantidadHojas();
-            }
-        } else {
-            if(hijoDer == null){
-                // si el izquierdo existe pero el derecho no
-                return hijoIzq.obtenerCantidadHojas();
-            } else {
-                // si ambos existen
-                return (hijoIzq.obtenerCantidadHojas() + hijoDer.obtenerCantidadHojas());
-            }
-        }
-    }
-
-    public void obtenerHojas(Lista<T> lista){
-        if(hijoIzq == null && hijoDer == null)
-            lista.insertar(new Nodo<>(etiqueta, datos));
-        if(hijoIzq != null)
-            hijoIzq.obtenerHojas(lista);
-        if(hijoDer != null)
-            hijoDer.obtenerHojas(lista);
-    }
-
-    public void ImprimirHojas(int nivelActual){
-        if(hijoIzq == null && hijoDer == null)
-            System.out.println("Hoja: " + this.getEtiqueta().toString() + ", " + this.getDatos().toString() +
-                    ", Nivel: " + nivelActual);
-        if(hijoIzq != null){
-            hijoIzq.ImprimirHojas(nivelActual + 1);
-        }
-        if(hijoDer != null){
-            hijoDer.ImprimirHojas(nivelActual + 1);
-        }
-    }
-
-    public int CantidadHijosNivel(int nivel, int actual, int contador) {
-        if(actual == nivel){
-            return contador+1;
-        } // else ...
-
-        if(this.hijoIzq != null)
-            contador = this.hijoIzq.CantidadHijosNivel(nivel, actual+1, contador);
-        if(this.hijoDer != null)
-            contador = this.hijoDer.CantidadHijosNivel(nivel, actual+1, contador);
-        return contador;
-    }
-
-    public boolean VerificarBusqueda(Comparable minimo, Comparable maximo){
-        boolean verificar = true;
-        if(this.etiqueta.compareTo(minimo) < 0 || this.etiqueta.compareTo(maximo) > 0){
-            verificar = false;
-        }
-        if(hijoIzq != null) {
-            verificar = verificar && hijoIzq.VerificarBusqueda(minimo, this.etiqueta);
-        }
-        if(hijoDer != null) {
-            verificar = verificar && hijoDer.VerificarBusqueda(this.etiqueta, maximo);
-        }
-        return verificar;
-    }
-
-    @Override
     public TElementoAB eliminar(Comparable unaEtiqueta) {
         if (unaEtiqueta.compareTo(etiqueta) < 0) {
             if (hijoIzq != null) {
@@ -280,13 +212,54 @@ public class TElementoAB<T> implements IElementoAB<T> {
         }
     }
 
+    @Override
+    public int obtenerCantidadHojas() {
+        if (hijoIzq == null){
+            if (hijoDer == null){
+                // si los dos no existen
+                return 1;
+            } else {
+                // si el izquierdo no existe pero el derecho si
+                return hijoDer.obtenerCantidadHojas();
+            }
+        } else {
+            if(hijoDer == null){
+                // si el izquierdo existe pero el derecho no
+                return hijoIzq.obtenerCantidadHojas();
+            } else {
+                // si ambos existen
+                return (hijoIzq.obtenerCantidadHojas() + hijoDer.obtenerCantidadHojas());
+            }
+        }
+    }
+
     public TElementoAB<T> ObtenerMenor(){
+        TElementoAB<T> auxiliar = this;
+        while(auxiliar != null){
+            if(auxiliar.getHijoIzq() == null)
+                return auxiliar;
+            auxiliar = auxiliar.getHijoIzq();
+        }
+        return this;
+    }
+
+    public TElementoAB<T> ObtenerMayor(){
+        TElementoAB<T> auxiliar = this;
+        while(auxiliar != null){
+            if(auxiliar.getHijoDer() == null)
+                return auxiliar;
+            auxiliar = auxiliar.getHijoDer();
+        }
+        return this;
+    }
+
+    public TElementoAB<T> ObtenerMenorRecursivo(){
         if(this.hijoIzq == null)
             return this;
         return this.hijoIzq.ObtenerMenor();
     }
 
-    public TElementoAB<T> ObtenerMayor(){
+    public TElementoAB<T> ObtenerMayorRecursivo(){
         if(this.hijoDer == null)
             return this;
         return this.hijoDer.ObtenerMayor();
@@ -323,4 +296,43 @@ public class TElementoAB<T> implements IElementoAB<T> {
         }
 
     }
+
+    public int ObtenerCantidadNodosNivel(int nivel, int actual, int contador) {
+        if(actual == nivel){
+            return contador+1;
+        } // else ...
+
+        if(this.hijoIzq != null)
+            contador = this.hijoIzq.ObtenerCantidadNodosNivel(nivel, actual+1, contador);
+        if(this.hijoDer != null)
+            contador = this.hijoDer.ObtenerCantidadNodosNivel(nivel, actual+1, contador);
+        return contador;
+    }
+
+    public void ImprimirHojas(int nivelActual){
+        if(hijoIzq == null && hijoDer == null)
+            System.out.println("Hoja: " + this.getEtiqueta().toString() + ", " + this.getDatos().toString() +
+                    ", Nivel: " + nivelActual);
+        if(hijoIzq != null){
+            hijoIzq.ImprimirHojas(nivelActual + 1);
+        }
+        if(hijoDer != null){
+            hijoDer.ImprimirHojas(nivelActual + 1);
+        }
+    }
+
+    public boolean VerificarBusqueda(Comparable minimo, Comparable maximo){
+        boolean verificar = true;
+        if(this.etiqueta.compareTo(minimo) < 0 || this.etiqueta.compareTo(maximo) > 0){
+            verificar = false;
+        }
+        if(hijoIzq != null) {
+            verificar = verificar && hijoIzq.VerificarBusqueda(minimo, this.etiqueta);
+        }
+        if(hijoDer != null) {
+            verificar = verificar && hijoDer.VerificarBusqueda(this.etiqueta, maximo);
+        }
+        return verificar;
+    }
+
 }

@@ -79,8 +79,11 @@ public class TArbolBB<T> implements IArbolBB<T> {
         return listaInorden;
     }
 
-    public boolean VerificarBusqueda(){
-        return this.raiz.VerificarBusqueda(this.ObtenerMenor().getEtiqueta(), this.ObtenerMayor().getEtiqueta());
+    @Override
+    public void eliminar(Comparable unaEtiqueta) {
+        if (!esVacio()) {
+            this.raiz = this.raiz.eliminar(unaEtiqueta);
+        }
     }
 
     @Override
@@ -111,19 +114,18 @@ public class TArbolBB<T> implements IArbolBB<T> {
         return raiz.obtenerCantidadHojas();
     }
 
-    public void imprimirHojas() {
-        raiz.ImprimirHojas(1);
-    }
+    // ----------------------------------------------------------------------
+    //  Implementaciones para trabajo obligatorio:
+    // ----------------------------------------------------------------------
 
-    public int CantidadNodosNivel(int nivel){
-        return raiz.CantidadHijosNivel(nivel, 1, 0);
-    }
-
-    @Override
-    public void eliminar(Comparable unaEtiqueta) {
-        if (!esVacio()) {
-            this.raiz = this.raiz.eliminar(unaEtiqueta);
+    public TElementoAB<T> ObtenerMenor(){
+        TElementoAB<T> auxiliar = raiz;
+        while(auxiliar != null){
+            if(auxiliar.getHijoIzq() == null)
+                return auxiliar;
+            auxiliar = auxiliar.getHijoIzq();
         }
+        return raiz;
     }
 
     public TElementoAB<T> ObtenerMayor(){
@@ -136,16 +138,8 @@ public class TArbolBB<T> implements IArbolBB<T> {
         return raiz;
     }
 
-    public TElementoAB<T> ObtenerMenor(){
-        TElementoAB<T> auxiliar = raiz;
-        while(auxiliar != null){
-            if(auxiliar.getHijoIzq() == null)
-                return auxiliar;
-            auxiliar = auxiliar.getHijoIzq();
-        }
-        return raiz;
-    }
-
+    // Implementación recursiva de los métodos anteriores. Se recomienda utilizar sus versiones no-recursivas,
+    // ya que son más eficientes.
     public TElementoAB<T> ObtenerMenorRecursivo(){
         return raiz.ObtenerMenor();
     }
@@ -156,6 +150,18 @@ public class TArbolBB<T> implements IArbolBB<T> {
 
     public TElementoAB<T> ObtenerInmediatoAnterior(Comparable unaEtiqueta){
         return raiz.ObtenerInmediatoAnterior(unaEtiqueta);
+    }
+
+    public int CantidadNodosNivel(int nivel){
+        return raiz.ObtenerCantidadNodosNivel(nivel, 1, 0);
+    }
+
+    public void imprimirHojas() {
+        raiz.ImprimirHojas(1);
+    }
+
+    public boolean VerificarBusqueda(){
+        return this.raiz.VerificarBusqueda(this.ObtenerMenor().getEtiqueta(), this.ObtenerMayor().getEtiqueta());
     }
 
 }

@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TArbolBBTest {
+class TestArbolBinario {
 
     public void PopularArbol(TArbolBB<Integer> arbolBB){
         arbolBB.insertar(new TElementoAB<>(10, 10));
