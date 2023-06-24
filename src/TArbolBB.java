@@ -111,14 +111,8 @@ public class TArbolBB<T> implements IArbolBB<T> {
         return raiz.obtenerCantidadHojas();
     }
 
-    public void imprimirHojas(Lista<T> lista) {
-        raiz.obtenerHojas(lista);
-        Nodo<T> aux = lista.getPrimero();
-        while(aux != null){
-            System.out.println(aux.getEtiqueta().toString() + ", " + aux.getDato().toString() +
-                    ", Nivel: " + raiz.obtenerNivel(aux.getEtiqueta()));
-            aux = aux.getSiguiente();
-        }
+    public void imprimirHojas() {
+        raiz.ImprimirHojas(1);
     }
 
     public int CantidadNodosNivel(int nivel){
@@ -158,6 +152,10 @@ public class TArbolBB<T> implements IArbolBB<T> {
 
     public TElementoAB<T> ObtenerMayorRecursivo(){
         return raiz.ObtenerMayor();
+    }
+
+    public TElementoAB<T> ObtenerInmediatoAnterior(Comparable unaEtiqueta){
+        return raiz.ObtenerInmediatoAnterior(unaEtiqueta);
     }
 
 }

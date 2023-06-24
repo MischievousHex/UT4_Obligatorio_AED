@@ -223,10 +223,10 @@ public class TElementoAB<T> implements IElementoAB<T> {
             verificar = false;
         }
         if(hijoIzq != null) {
-            verificar = verificar && hijoIzq.VerificarBusqueda(this.etiqueta, maximo);
+            verificar = verificar && hijoIzq.VerificarBusqueda(minimo, this.etiqueta);
         }
         if(hijoDer != null) {
-            verificar = verificar && hijoDer.VerificarBusqueda(minimo, this.etiqueta);
+            verificar = verificar && hijoDer.VerificarBusqueda(this.etiqueta, maximo);
         }
         return verificar;
     }
@@ -308,12 +308,12 @@ public class TElementoAB<T> implements IElementoAB<T> {
                     return anterior;
                 else return actual.getHijoIzq().ObtenerMayor();
             }
-            else if (actual.etiqueta.compareTo(unaEtiqueta) < 0) {
+            else if (actual.etiqueta.compareTo(unaEtiqueta) > 0) {
                 if (actual.getHijoIzq() != null)
                     actual = actual.getHijoIzq();
             }
 
-            else if (actual.etiqueta.compareTo(unaEtiqueta) > 0) {
+            else if (actual.etiqueta.compareTo(unaEtiqueta) < 0) {
                 if (actual.getHijoDer() != null) {
                     anterior = actual;
                     actual = actual.getHijoDer();
