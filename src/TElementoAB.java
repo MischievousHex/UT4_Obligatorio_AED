@@ -9,7 +9,6 @@ public class TElementoAB<T> implements IElementoAB<T> {
      * @param unaEtiqueta
      * @param unosDatos 
      */
-    @SuppressWarnings("unchecked")
     public TElementoAB(Comparable unaEtiqueta, T unosDatos) {
         etiqueta = unaEtiqueta;
         datos = unosDatos;
@@ -194,14 +193,15 @@ public class TElementoAB<T> implements IElementoAB<T> {
             hijoDer.obtenerHojas(lista);
     }
 
-    public void ImprimirHojas(){
+    public void ImprimirHojas(int nivelActual){
         if(hijoIzq == null && hijoDer == null)
-            System.out.println("Hoja: " + this.getEtiqueta().toString() + ", " + this.getDatos().toString());
+            System.out.println("Hoja: " + this.getEtiqueta().toString() + ", " + this.getDatos().toString() +
+                    ", Nivel: " + nivelActual);
         if(hijoIzq != null){
-            hijoIzq.ImprimirHojas();
+            hijoIzq.ImprimirHojas(nivelActual + 1);
         }
         if(hijoDer != null){
-            hijoDer.ImprimirHojas();
+            hijoDer.ImprimirHojas(nivelActual + 1);
         }
     }
 

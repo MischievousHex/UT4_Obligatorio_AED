@@ -103,7 +103,12 @@ public interface IElementoAB<T> {
 	 */
 	public int obtenerCantidadHojas();
 
-public TElementoAB eliminar(Comparable unaEtiqueta);
+    /**
+     * Elimina un nodo
+     * @param unaEtiqueta Etiqueta del nodo
+     * @return El elemento eliminado
+     */
+    public TElementoAB eliminar(Comparable unaEtiqueta);
 
 
 }
