@@ -20,41 +20,51 @@ public class TCalculadorMatricesOptimo<T> implements ICalculadorMatricesOptimo
         }
 
         // Calcular W
-        for(int m = 0; m <= cantidadElementos; m++){
-            for(int i = 0; i < (cantidadElementos - m); i++){
-                int j = i + m;
-                if(j != 0)
+        for(int m = 0; m <= cantidadElementos; m++){ // m= 0, 1, 2, 3, 4
+            for(int i = 0; i <= (cantidadElementos - m); i++){   // i = 0:4, 0:3, 0:2, 0:1, 0
+                int j = i + m;                                  // j = 0:4, 1:4, 2:4, 3:4, 4
+                if(j != 0)      // j == 0 ya está calculado
                     // Calculo de W
                     W[i][j] = W[i][j-1] + frecuenciaExito[j] + frecuenciaNoExito[j];
+
         // Calcular C y R
                 // Obtener todos los Cs necesarios
-                int[] Cs = new int[j-i+1];
-                int x = 0;
-                for(int iii = i+1; iii <= j; iii++){
-                    Cs[x] = C[i][iii-1] + C[iii][j];
+                int[] PosiblesC = new int[j-i+1];
+                int x = 0; // iterador
+                for(int k = i+1; k <= j; k++){
+                    PosiblesC[x] = C[i][k-1] + C[k][j];
                     x++;
                 }
                 // Obtener el minimo
-                int minimo = Cs[0];
-                int elegido = 0;
-                for(int valor = 0; valor < Cs.length; valor++){
-                    if(Cs[valor] < minimo) {
-                        minimo = Cs[valor];
+                int minimo = PosiblesC[0];
+                int kElegido = i+1;
+                for(int valor = 0; valor < PosiblesC.length; valor++){
+                    if(PosiblesC[valor] < minimo) {
+                        minimo = PosiblesC[valor];
                         // el valor elegido es de i<k<=j, asi que sumamos i+1 para que sea un k valido
-                        elegido = valor + 1 + i;
+                        kElegido = valor + 1 + i;
                     }
                 }
                 // Calculo de C
                 C[i][j] = minimo + W[i][j];
 
                 // Calculo de R
-                R[i][j] = elegido;
+                R[i][j] = kElegido;
             }
         }
+
     }
 
     @Override
     public void ArmarArbol(int i, int j, Comparable[] claves, TArbolBB elArbol) {
-
+        if(i == j)
+            return;
+        // La raíz es R(i, j), obtenemos su clave
+        Comparable clave = claves[R[i][j]];
+        // Insertamos el elemento actual
+        TElementoAB<T> Elemento = new TElementoAB<T>(clave, (T) clave);
+        elArbol.insertar(Elemento);
+        ArmarArbol(i, R[i][j]-1, claves, elArbol); // El hijo izquierdo va desde el menor valor a el de su padre -1
+        ArmarArbol(R[i][j], j, claves, elArbol); // El hijo derecho va desde su padre hasta el mayor valor.
     }
 }
