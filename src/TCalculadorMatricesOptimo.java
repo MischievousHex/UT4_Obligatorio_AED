@@ -58,14 +58,31 @@ public class TCalculadorMatricesOptimo<T> implements ICalculadorMatricesOptimo
 
     @Override
     public void ArmarArbol(int i, int j, Comparable[] claves, TArbolBB elArbol) {
+
+        // para normalizar las claves, asumimos que 0 es nulo, para no forzar al usuario a typear un "null" en cada
+        // array de claves, lo automatizamos
+        if(claves[0] != null){
+            Comparable[] fixeado = new Comparable[claves.length + 1];
+            fixeado[0] = null;
+            for(int z = 0; z < claves.length; z++){
+                fixeado[z+1] = claves[z];
+            }
+            claves = fixeado;
+        }
+
+        // código del método
         if(i == j)
             return;
         // La raíz es R(i, j), obtenemos su clave
         Comparable clave = claves[R[i][j]];
+        if(clave == null)
+            return;
         // Insertamos el elemento actual
         TElementoAB<T> Elemento = new TElementoAB<T>(clave, (T) clave);
         elArbol.insertar(Elemento);
-        ArmarArbol(i, R[i][j-1], claves, elArbol); // El hijo izquierdo va desde el menor valor a el de su padre -1
+        ArmarArbol(i, R[i][j]-1, claves, elArbol); // El hijo izquierdo va desde el menor valor a el de su padre -1
         ArmarArbol(R[i][j], j, claves, elArbol); // El hijo derecho va desde su padre hasta el mayor valor.
+
+        // El error es cuando toma el 0 como un valor de key valido
     }
 }

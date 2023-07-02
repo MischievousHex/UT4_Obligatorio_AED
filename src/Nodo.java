@@ -70,9 +70,9 @@ public class Nodo<T> implements INodo<T> {
     @Override
     public String toString() {
         return "{" +
-                "etiqueta=" + etiqueta +
-                ", dato=" + dato +
-                ", siguiente=" + siguiente +
-                '}';
+                etiqueta +
+                ": " +
+                dato +
+                "}, ";
     }
 }

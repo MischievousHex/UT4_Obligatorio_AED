@@ -48,6 +48,22 @@ public class TArbolBB<T> implements IArbolBB<T> {
         }
     }
 
+    @Override
+    public Lista<T> inorden() {
+        Lista <T> listaInorden = null;
+        if (!esVacio()) {
+            listaInorden = new Lista<T>();
+            raiz.inOrden(listaInorden);
+        }
+        return listaInorden;
+    }
+
+    public String postOrden(){
+        if(esVacio())
+            return null;
+        return raiz.postOrden();
+    }
+
     /**
      * @return recorrida en preOrden del arbol, null en caso de ser vacío
      */
@@ -67,16 +83,6 @@ public class TArbolBB<T> implements IArbolBB<T> {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public Lista<T> inorden() {
-        Lista <T> listaInorden = null;
-        if (!esVacio()) {
-            listaInorden = new Lista<T>();
-            raiz.inOrden(listaInorden);
-        }
-        return listaInorden;
     }
 
     @Override
